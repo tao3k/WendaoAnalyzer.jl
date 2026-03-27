@@ -1,0 +1,4 @@
+[analyzer]
+strategy = "similarity_only"
+vector_weight = 0.35
+similarity_weight = 0.65

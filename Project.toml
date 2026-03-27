@@ -1,0 +1,17 @@
+name = "WendaoAnalyzer"
+uuid = "de5f25e8-5e35-4fbb-b0c8-9d6a4c83f27d"
+authors = ["Guangtao Workspace"]
+version = "0.1.0"
+
+[deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
+
+[compat]
+julia = "1.10"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
