@@ -1,5 +1,19 @@
 using Test
+using TOML
 using WendaoAnalyzer
+
+@testset "package version stays on the locked beta boundary" begin
+    @test pkgversion(WendaoAnalyzer) == v"0.2.0"
+end
+
+@testset "package declares WendaoArrow as a formal Flight dependency" begin
+    project = TOML.parsefile(joinpath(@__DIR__, "..", "Project.toml"))
+    @test haskey(project["deps"], "WendaoArrow")
+    @test project["deps"]["WendaoArrow"] == "561c8d8d-4bcf-4807-873b-a6b7d1e55843"
+    source = get(project, "sources", Dict{String, Any}())["WendaoArrow"]
+    @test source["url"] == "https://github.com/tao3k/WendaoArrow.jl.git"
+    @test source["rev"] == "8a72a7c218bdb1152f08ca8aedaf0ab6e9116681"
+end
 
 @testset "load_analyzer_runtime_config reads TOML strategy" begin
     temp_dir = mktempdir()
@@ -27,11 +41,10 @@ end
         "--vector-weight=0.2",
         "--port",
         "18080",
-        "--route=/arrow-ipc",
     ])
 
     @test analyzer_args == ["--analyzer-strategy", "similarity_only", "--vector-weight=0.2"]
-    @test wendaoarrow_args == ["--port", "18080", "--route=/arrow-ipc"]
+    @test wendaoarrow_args == ["--port", "18080"]
 end
 
 @testset "analyzer_runtime_from_args resolves flags" begin
@@ -71,11 +84,10 @@ end
         config_path,
         "--port",
         "18080",
-        "--route=/arrow-ipc",
     ])
 
     @test contract.runtime.analyzer isa SimilarityOnlyAnalyzer
-    @test contract.wendaoarrow_args == ["--port", "18080", "--route=/arrow-ipc"]
+    @test contract.wendaoarrow_args == ["--port", "18080"]
 end
 
 @testset "analyzer_service_descriptor_from_args resolves service mode" begin

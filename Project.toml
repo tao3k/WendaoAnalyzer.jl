@@ -1,13 +1,18 @@
 name = "WendaoAnalyzer"
 uuid = "de5f25e8-5e35-4fbb-b0c8-9d6a4c83f27d"
-authors = ["Guangtao Workspace"]
-version = "0.1.0"
+authors = ["CyberXiuXian Workshop"]
+version = "0.2.0"
 
 [deps]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
+WendaoArrow = "561c8d8d-4bcf-4807-873b-a6b7d1e55843"
+
+[sources]
+WendaoArrow = { url = "https://github.com/tao3k/WendaoArrow.jl.git", rev = "8a72a7c218bdb1152f08ca8aedaf0ab6e9116681" }
 
 [compat]
+WendaoArrow = "0.1"
 julia = "1.10"
 
 [extras]

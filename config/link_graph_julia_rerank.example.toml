@@ -1,0 +1,11 @@
+[link_graph.retrieval.julia_rerank]
+base_url = "http://127.0.0.1:18080"
+route = "/rerank"
+health_route = "/health"
+schema_version = "v1"
+timeout_secs = 15
+service_mode = "stream"
+analyzer_config_path = ".data/WendaoAnalyzer/config/analyzer.example.toml"
+analyzer_strategy = "similarity_only"
+vector_weight = 0.35
+similarity_weight = 0.65
