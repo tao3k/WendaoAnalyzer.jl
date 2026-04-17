@@ -132,17 +132,18 @@ Pass analyzer and transport config together through the same service contract:
 ```bash
 scripts/run_stream_linear_blend_server.sh \
   --analyzer-config config/analyzer.example.toml \
-  --config ../WendaoArrow/config/wendao_arrow.example.toml \
+  --config ../WendaoArrow.jl/config/wendao_arrow.example.toml \
   --port 18080
 ```
 
 The named stream/table scripts remain compatibility wrappers around the generic
-`run_analyzer_service.sh` launcher. The launcher bootstraps a cached Flight
-environment under `.cache/julia/wendaoanalyzer-flight-env`, develops the local
-`WendaoAnalyzer`, resolves the pinned `WendaoArrow` GitHub source declared by
-this package, develops vendored `gRPCServer.jl`, then includes the example
-entrypoint. Set `WENDAO_ANALYZER_WENDAOARROW_PATH` if you explicitly want to
-override that default with a local `WendaoArrow` checkout.
+`run_analyzer_service.sh` launcher. The launcher bootstraps a fresh cached
+Flight environment under `.cache/julia/`, develops the local
+`WendaoAnalyzer`, prefers a sibling `.data/arrow-julia` checkout when present,
+then prefers a sibling `.data/WendaoArrow.jl` checkout before falling back to
+the pinned `WendaoArrow` GitHub source declared by this package. Set
+`WENDAO_ANALYZER_WENDAOARROW_PATH` if you explicitly want to override that
+default with a different local `WendaoArrow` checkout.
 
 ## Validation
 

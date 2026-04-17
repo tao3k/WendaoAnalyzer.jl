@@ -1,6 +1,6 @@
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.12.5"
+julia_version = "1.12.6"
 manifest_format = "2.0"
 project_hash = "f7d7149460bc24577bc52311e03113ae1ce3888c"
 
@@ -353,7 +353,7 @@ version = "0.2.0"
 [[deps.WendaoArrow]]
 deps = ["Arrow", "ArrowTypes", "Dates", "Logging", "TOML", "Tables"]
 git-tree-sha1 = "b8ba1e264c1a1906d339b49170929c54aa68b7db"
-repo-rev = "8a72a7c218bdb1152f08ca8aedaf0ab6e9116681"
+repo-rev = "1631e7a7ed864d94f90f11c3cf732f83b9a39d87"
 repo-url = "https://github.com/tao3k/WendaoArrow.jl.git"
 uuid = "561c8d8d-4bcf-4807-873b-a6b7d1e55843"
 version = "0.1.0"

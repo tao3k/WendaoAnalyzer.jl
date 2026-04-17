@@ -1,6 +1,5 @@
 using WendaoAnalyzer
 using WendaoArrow
-using gRPCServer
 
 service = WendaoAnalyzer.analyzer_service_descriptor_from_args(ARGS)
 config = WendaoArrow.config_from_args(service.contract.wendaoarrow_args)
