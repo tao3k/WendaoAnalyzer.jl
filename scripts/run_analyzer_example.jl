@@ -27,22 +27,6 @@ function flight_roots(path::AbstractString)
     return roots
 end
 
-function locate_grpcserver()
-    if haskey(ENV, "WENDAO_FLIGHT_GRPCSERVER_PATH")
-        candidate = abspath(ENV["WENDAO_FLIGHT_GRPCSERVER_PATH"])
-        isdir(candidate) || error("WENDAO_FLIGHT_GRPCSERVER_PATH does not exist: $candidate")
-        return candidate
-    end
-    for root in flight_roots(SCRIPT_ROOT)
-        candidate = joinpath(root, ".cache", "vendor", "gRPCServer.jl")
-        isdir(candidate) && return candidate
-    end
-    error(
-        "Could not locate vendored gRPCServer.jl. " *
-        "Set WENDAO_FLIGHT_GRPCSERVER_PATH to an explicit checkout path.",
-    )
-end
-
 function flight_env_path()
     if haskey(ENV, "WENDAO_ANALYZER_FLIGHT_ENV")
         path = abspath(ENV["WENDAO_ANALYZER_FLIGHT_ENV"])
@@ -50,7 +34,9 @@ function flight_env_path()
         return path
     end
     for root in flight_roots(SCRIPT_ROOT)
-        path = joinpath(root, ".cache", "julia", "wendaoanalyzer-flight-env")
+        parent = joinpath(root, ".cache", "julia")
+        mkpath(parent)
+        path = joinpath(parent, "wendaoanalyzer-flight-env-$(getpid())-$(Base.time_ns())")
         mkpath(path)
         return path
     end
@@ -64,6 +50,32 @@ function maybe_override_wendaoarrow()
     return candidate
 end
 
+function maybe_local_wendaoarrow()
+    for root in flight_roots(SCRIPT_ROOT)
+        candidate = joinpath(root, ".data", "WendaoArrow.jl")
+        isdir(candidate) && return candidate
+    end
+    return nothing
+end
+
+function maybe_local_arrow_checkout()
+    candidates = String[]
+    if haskey(ENV, "PRJ_ROOT")
+        push!(candidates, ENV["PRJ_ROOT"])
+    end
+    for root in flight_roots(SCRIPT_ROOT)
+        push!(candidates, root)
+    end
+    for candidate_root in unique(normpath.(abspath.(candidates)))
+        candidate = joinpath(candidate_root, ".data", "arrow-julia")
+        isdir(candidate) || continue
+        isfile(joinpath(candidate, "Project.toml")) || continue
+        isfile(joinpath(candidate, "src", "ArrowTypes", "Project.toml")) || continue
+        return candidate
+    end
+    return nothing
+end
+
 function declared_wendaoarrow_source()
     project = TOML.parsefile(joinpath(ANALYZER_ROOT, "Project.toml"))
     sources = get(project, "sources", Dict{String, Any}())
@@ -74,15 +86,30 @@ end
 
 function activate_flight_env()
     env_path = flight_env_path()
+    if haskey(ENV, "WENDAO_ANALYZER_FLIGHT_ENV")
+        for stale_file in ("Project.toml", "Manifest.toml")
+            candidate = joinpath(env_path, stale_file)
+            isfile(candidate) && rm(candidate; force = true)
+        end
+    end
     Pkg.activate(env_path)
-    Pkg.develop(PackageSpec(path = ANALYZER_ROOT))
-    if let override = maybe_override_wendaoarrow()
+    local_arrow = maybe_local_arrow_checkout()
+    if !isnothing(local_arrow)
+        Pkg.develop(
+            [
+                PackageSpec(path = local_arrow),
+                PackageSpec(path = joinpath(local_arrow, "src", "ArrowTypes")),
+            ],
+        )
+    end
+    override = something(maybe_override_wendaoarrow(), maybe_local_wendaoarrow())
+    if !isnothing(override)
         Pkg.develop(PackageSpec(path = override))
     else
         source = declared_wendaoarrow_source()
         Pkg.add(PackageSpec(url = source["url"], rev = source["rev"]))
     end
-    Pkg.develop(PackageSpec(path = locate_grpcserver()))
+    Pkg.develop(PackageSpec(path = ANALYZER_ROOT))
     Pkg.add("Tables")
     Pkg.instantiate()
     return env_path

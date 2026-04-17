@@ -1,6 +1,6 @@
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.12.5"
+julia_version = "1.12.6"
 manifest_format = "2.0"
 project_hash = "f7d7149460bc24577bc52311e03113ae1ce3888c"
 
@@ -9,23 +9,25 @@ uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
 version = "1.1.2"
 
 [[deps.Arrow]]
-deps = ["ArrowTypes", "Base64", "BitIntegers", "CodecLz4", "CodecZstd", "ConcurrentUtilities", "DataAPI", "Dates", "EnumX", "JSON3", "Mmap", "PooledArrays", "ProtoBuf", "SentinelArrays", "StringViews", "Tables", "TimeZones", "TranscodingStreams", "UUIDs", "gRPCClient"]
-git-tree-sha1 = "a3c01904cf3dc40e9cfc7b7ae64e521090635214"
-repo-rev = "d133dcbe7445fc5a2b3d72c5ebd258cb47ce10a4"
+deps = ["ArrowTypes", "Base64", "BitIntegers", "CodecLz4", "CodecZstd", "ConcurrentUtilities", "DataAPI", "Dates", "EnumX", "JSON3", "Mmap", "PooledArrays", "ProtoBuf", "PureHTTP2", "SentinelArrays", "Sockets", "StringViews", "Tables", "TimeZones", "TranscodingStreams", "UUIDs"]
+git-tree-sha1 = "da5303acc7cd69c80a9ab93b0d04f0c930d15fba"
+repo-rev = "eb62c6659c6b27952a70090a69adbe770d2b5e57"
 repo-url = "https://github.com/JuliaCN/arrow-julia.git"
 uuid = "69666777-d1a9-59fb-9406-91d4454c9d45"
 version = "2.8.1"
 
     [deps.Arrow.extensions]
-    ArrowgRPCServerExt = "gRPCServer"
+    ArrowFlightNghttp2Ext = "Nghttp2Wrapper"
+    ArrowFlightgRPCClientExt = "gRPCClient"
 
     [deps.Arrow.weakdeps]
-    gRPCServer = "608c6337-0d7d-447f-bb69-0f5674ee3959"
+    Nghttp2Wrapper = "aac3f40a-7475-434e-9d89-bbdc1574c652"
+    gRPCClient = "aaca4a50-36af-4a1d-b878-4c443f2061ad"
 
 [[deps.ArrowTypes]]
 deps = ["Sockets", "UUIDs"]
-git-tree-sha1 = "883a44cb0645fa29413be8c7890ac01028063da3"
-repo-rev = "d133dcbe7445fc5a2b3d72c5ebd258cb47ce10a4"
+git-tree-sha1 = "06998e7303d1e78e3ea544cf55c001966f2fe86f"
+repo-rev = "eb62c6659c6b27952a70090a69adbe770d2b5e57"
 repo-subdir = "src/ArrowTypes"
 repo-url = "https://github.com/JuliaCN/arrow-julia.git"
 uuid = "31f734f8-188a-4ce0-8406-c8a06bd891cd"
@@ -255,6 +257,21 @@ git-tree-sha1 = "54edb8edeee7dd3c3bf96c4b1c4884aa00e5d618"
 uuid = "3349acd9-ac6a-5e09-bcdb-63829b23a429"
 version = "1.2.3"
 
+[[deps.PureHTTP2]]
+git-tree-sha1 = "77a5335f3cece72a07103f543da88df9972311e8"
+repo-rev = "03d8853e9556a4355d7b650853cda62b1906d88e"
+repo-url = "https://github.com/s-celles/PureHTTP2.jl"
+uuid = "7d1e1b98-28e7-4969-8df9-5a308937986a"
+version = "0.5.0"
+
+    [deps.PureHTTP2.extensions]
+    PureHTTP2OpenSSLExt = "OpenSSL"
+    PureHTTP2ReseauExt = "Reseau"
+
+    [deps.PureHTTP2.weakdeps]
+    OpenSSL = "4d8831e6-92b7-49fb-bdf8-b643e874388c"
+    Reseau = "802f3686-a58f-41ce-bb0c-3c43c75bba36"
+
 [[deps.Random]]
 deps = ["SHA"]
 uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
@@ -351,18 +368,12 @@ uuid = "de5f25e8-5e35-4fbb-b0c8-9d6a4c83f27d"
 version = "0.2.0"
 
 [[deps.WendaoArrow]]
-deps = ["Arrow", "ArrowTypes", "Dates", "Logging", "TOML", "Tables"]
-git-tree-sha1 = "b8ba1e264c1a1906d339b49170929c54aa68b7db"
-repo-rev = "8a72a7c218bdb1152f08ca8aedaf0ab6e9116681"
+deps = ["Arrow", "ArrowTypes", "Dates", "Logging", "PureHTTP2", "TOML", "Tables"]
+git-tree-sha1 = "92347b99ed0fee2a8ae4649081019b8839b2c89c"
+repo-rev = "1631e7a05e12daf223c9038867f438f621c1b37e"
 repo-url = "https://github.com/tao3k/WendaoArrow.jl.git"
 uuid = "561c8d8d-4bcf-4807-873b-a6b7d1e55843"
 version = "0.1.0"
-
-    [deps.WendaoArrow.extensions]
-    WendaoArrowgRPCServerExt = "gRPCServer"
-
-    [deps.WendaoArrow.weakdeps]
-    gRPCServer = "608c6337-0d7d-447f-bb69-0f5674ee3959"
 
 [[deps.Zlib_jll]]
 deps = ["Libdl"]
@@ -374,12 +385,6 @@ deps = ["Artifacts", "JLLWrappers", "Libdl"]
 git-tree-sha1 = "446b23e73536f84e8037f5dce465e92275f6a308"
 uuid = "3161d3a3-bdf6-5164-811a-617609db77b4"
 version = "1.5.7+1"
-
-[[deps.gRPCClient]]
-deps = ["FileWatching", "LibCURL", "PrecompileTools", "ProtoBuf"]
-git-tree-sha1 = "f5d2ab61cf2fb7318fdc7c244f1d409891c81df9"
-uuid = "aaca4a50-36af-4a1d-b878-4c443f2061ad"
-version = "1.0.1"
 
 [[deps.libblastrampoline_jll]]
 deps = ["Artifacts", "Libdl"]
