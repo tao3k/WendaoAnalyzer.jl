@@ -12,7 +12,7 @@ end
     @test project["deps"]["WendaoArrow"] == "561c8d8d-4bcf-4807-873b-a6b7d1e55843"
     source = get(project, "sources", Dict{String, Any}())["WendaoArrow"]
     @test source["url"] == "https://github.com/tao3k/WendaoArrow.jl.git"
-    @test source["rev"] == "1631e7a7ed864d94f90f11c3cf732f83b9a39d87"
+    @test source["rev"] == "1631e7a05e12daf223c9038867f438f621c1b37e"
 end
 
 @testset "load_analyzer_runtime_config reads TOML strategy" begin

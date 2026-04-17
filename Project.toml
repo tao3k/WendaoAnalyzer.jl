@@ -9,7 +9,7 @@ TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
 WendaoArrow = "561c8d8d-4bcf-4807-873b-a6b7d1e55843"
 
 [sources]
-WendaoArrow = { url = "https://github.com/tao3k/WendaoArrow.jl.git", rev = "1631e7a7ed864d94f90f11c3cf732f83b9a39d87" }
+WendaoArrow = { url = "https://github.com/tao3k/WendaoArrow.jl.git", rev = "1631e7a05e12daf223c9038867f438f621c1b37e" }
 
 [compat]
 WendaoArrow = "0.1"
